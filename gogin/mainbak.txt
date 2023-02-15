@@ -1,0 +1,50 @@
+package main
+
+import (
+	"fmt"
+	"gogin/bao1"
+	"gogin/bao2"
+	"os"
+)
+
+func main() {
+	// 1:打开文件
+	/*
+		os.Open()
+		打开文件--不进行写入操作
+		Open函数的返回值2个变量接收,【1变量接收返回对象】,【2变量接收 打开成时 值为<nil>,打开错误时为字符串】
+	*/
+	fileObj, err := os.Open("./name.txt")
+	if err != nil {
+		fmt.Printf("打开错误%v", err)
+		return
+	}
+	//fmt.Printf("文件打开成功%v", err) //err==<nil>
+	//fmt.Printf("%T", fileObj)//fileObj==*os.File
+	//fmt.Printf("读取的内容为对象：%v\n", fileObj)//fileObj==&{0xc000004a00}
+	//2:读取文件
+	/*
+		file.Read()
+		它接收一个字节切片，返回读取的字节数和可能的具体错误，读到文件末尾时会返回0和io.EOF。 举个例子：
+	*/
+	var tmp = make([]byte, 128)
+	//声明一个切片 byte类型，存放128个字节为一组
+	//读取对象中的数据
+	//
+	n, err := fileObj.Read(tmp)
+	if err != nil {
+		fmt.Printf("打开错误%v\n", err)
+		return
+	}
+	//成功时
+	fmt.Printf("字节类型数据:%d", n)
+	fmt.Printf("字节类型数据:%v", n)
+	fmt.Println(string(tmp)) //把切片转换为字符串？
+
+	defer fileObj.Close() //延迟执行，关闭读取的文件
+	fmt.Println("已经关闭文件") // 关闭文件
+	bao1.Bao1file1f1()
+	bao1.Bao2file1f2()
+	bao2.Bao2file1f1()
+	bao2.Bao2file1f2()
+}
